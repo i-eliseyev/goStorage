@@ -13,10 +13,10 @@ func TestPut(t *testing.T) {
 	var val interface{}
 	var contains bool
 
-	defer delete(storage.Store, key)
+	defer delete(storage.Store.M, key)
 
 	// Sanity check
-	_, contains = storage.Store[key]
+	_, contains = storage.Store.M[key]
 	if contains {
 		t.Error("key/value already exists")
 	}
@@ -27,7 +27,7 @@ func TestPut(t *testing.T) {
 		t.Error(err)
 	}
 
-	val, contains = storage.Store[key]
+	val, contains = storage.Store.M[key]
 	if !contains {
 		t.Error("create failed")
 	}
@@ -44,7 +44,7 @@ func TestGet(t *testing.T) {
 	var val interface{}
 	var err error
 
-	defer delete(storage.Store, key)
+	defer delete(storage.Store.M, key)
 
 	// Read a non-thing
 	val, err = storage.Get(key)
@@ -55,7 +55,7 @@ func TestGet(t *testing.T) {
 		t.Error("unexpected error:", err)
 	}
 
-	storage.Store[key] = value
+	storage.Store.M[key] = value
 
 	val, err = storage.Get(key)
 	if err != nil {
@@ -73,18 +73,18 @@ func TestDelete(t *testing.T) {
 
 	var contains bool
 
-	defer delete(storage.Store, key)
+	defer delete(storage.Store.M, key)
 
-	storage.Store[key] = value
+	storage.Store.M[key] = value
 
-	_, contains = storage.Store[key]
+	_, contains = storage.Store.M[key]
 	if !contains {
 		t.Error("key/value doesn't exist")
 	}
 
 	storage.Delete(key)
 
-	_, contains = storage.Store[key]
+	_, contains = storage.Store.M[key]
 	if contains {
 		t.Error("Delete failed")
 	}
